@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的作品集</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="menu-icon">
+      <span class="hamburger"></span>
+    </div>
+    <nav class="nav-menu">
+      <a href="#about">關於我</a>
+      <a href="#projects">作品集</a>
+      <a href="#contact">聯絡方式</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="about">
+      <img src="attached_assets/IMG_5139.jpeg" alt="個人照片" class="profile-img">
+      <div class="about-content">
+        <h1>謝心茹</h1>
+        <div class="education-info">
+          <span class="school">臺灣科技大學</span>
+          <span class="department">企業管理系</span>
+        </div>
+        <p>歡迎來到我的個人網站！這裡記錄了我在學習與實作過程中的點滴成果與專案，邀請你一同見證我的成長旅程。</p>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>作品集</h2>
+      <div class="project-grid">
+        <article class="project">
+          <h3>虛擬背景製作</h3>
+          <img src="attached_assets/image.png" alt="虛擬背景專案" class="project-img">
+          <p>運用綠幕技術製作各種風格的虛擬背景效果，包含可愛風格與動漫風格。</p>
+        </article>
+        <article class="project">
+          <h3>臉部辨識與特效</h3>
+          <img src="attached_assets/image-2.png" alt="臉部辨識專案" class="project-img">
+          <p>實現即時臉部辨識功能，能夠生成臉部網格及添加特效濾鏡。</p>
+        </article>
+        <article class="project">
+          <h3>手勢辨識系統</h3>
+          <img src="attached_assets/image-3.png" alt="手勢辨識專案" class="project-img">
+          <p>開發手勢識別系統，能夠即時檢測和分析手部動作，實現互動功能。</p>
+        </article>
+        <article class="project">
+          <h3>LLM應用開發</h3>
+          <img src="attached_assets/image (1).png" alt="LLM專案" class="project-img">
+          <p>開發基於Gemma的多模態與純文字LLM應用，整合影像辨識與自然語言處理技術。</p>
+        </article>
+        <article class="project">
+          <h3>影像辨識演示</h3>
+          <div class="teachable-demo">
+            <button type="button" onclick="init()" class="demo-button">開始演示</button>
+            <div id="webcam-container"></div>
+            <div id="label-container"></div>
+          </div>
+          <p>使用 Teachable Machine 開發的即時影像辨識系統，可透過網路攝影機進行即時物體識別。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>聯絡方式</h2>
+      <p>Email: b11108058@gapps.ntust.edu.tw</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 謝心茹</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
