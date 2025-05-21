@@ -1,4 +1,4 @@
-
+// 菜單開關與平滑捲動
 const menuIcon = document.querySelector('.menu-icon');
 const navMenu = document.querySelector('.nav-menu');
 
@@ -20,49 +20,63 @@ const URL = "https://teachablemachine.withgoogle.com/models/4YdhgapBu/";
 let model, webcam, labelContainer, maxPredictions;
 
 async function init() {
-    try {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
+  try {
+    // 若已初始化，跳過
+    if (webcam) return;
 
-        // 檢查是否已經初始化
-        if (webcam) {
-            return;
-        }
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
 
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
 
-        const flip = true;
-        webcam = new tmImage.Webcam(200, 200, flip);
-        await webcam.setup();
-        await webcam.play();
-        window.requestAnimationFrame(loop);
+    const flip = true;
+    webcam = new tmImage.Webcam(200, 200, flip);
+    await webcam.setup();
 
-        const webcamContainer = document.getElementById("webcam-container");
-        webcamContainer.innerHTML = ''; // 清空容器
-        webcamContainer.appendChild(webcam.canvas);
-        
-        labelContainer = document.getElementById("label-container");
-        labelContainer.innerHTML = ''; // 清空標籤容器
-        for (let i = 0; i < maxPredictions; i++) {
-            labelContainer.appendChild(document.createElement("div"));
-        }
-    } catch (error) {
-        console.error('初始化時發生錯誤:', error);
+    // 將 webcam 畫面插入 DOM
+    const webcamContainer = document.getElementById("webcam-container");
+    webcamContainer.innerHTML = '';
+    webcamContainer.appendChild(webcam.canvas);
+
+    // 建立標籤容器內的 div
+    labelContainer = document.getElementById("label-container");
+    labelContainer.innerHTML = '';
+    for (let i = 0; i < maxPredictions; i++) {
+      labelContainer.appendChild(document.createElement("div"));
     }
+
+    await webcam.play();
+    window.requestAnimationFrame(loop);
+  } catch (error) {
+    console.error('初始化時發生錯誤:', error);
+  }
+}
+
+function stopWebcam() {
+  if (webcam && webcam.stop) {
+    webcam.stop();
+    webcam = null;
+
+    document.getElementById("webcam-container").innerHTML = '';
+    document.getElementById("label-container").innerHTML = '';
+  }
 }
 
 async function loop() {
-    webcam.update();
-    await predict();
-    window.requestAnimationFrame(loop);
+  if (!webcam) return; // webcam 已停止時跳出迴圈
+  webcam.update();
+  await predict();
+  window.requestAnimationFrame(loop);
 }
 
 async function predict() {
-    const prediction = await model.predict(webcam.canvas);
-    for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction =
-            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-        labelContainer.childNodes[i].innerHTML = classPrediction;
-    }
+  if (!model || !labelContainer || labelContainer.childNodes.length !== maxPredictions) return;
+
+  const prediction = await model.predict(webcam.canvas);
+  for (let i = 0; i < maxPredictions; i++) {
+    const classPrediction =
+      prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+    labelContainer.childNodes[i].innerHTML = classPrediction;
+  }
 }
